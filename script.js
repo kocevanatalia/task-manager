@@ -1,7 +1,40 @@
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let editingIndex = null;
+let editInputValue = "";
+let editNoteValue = "";
 
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function startEditing(index) {
+    editingIndex = index;
+    editInputValue = tasks[index].text;
+    editNoteValue = tasks[index].note || "";
+    renderTasks();
+}
+
+function cancelEditing() {
+    editingIndex = null;
+    editInputValue = "";
+    editNoteValue = "";
+    renderTasks();
+}
+
+function saveEdit(index) {
+    const trimmedText = editInputValue.trim();
+    const trimmedNote = editNoteValue.trim();
+
+    if (trimmedText === "") return;
+
+    tasks[index].text = trimmedText;
+    tasks[index].note = trimmedNote;
+    saveTasks();
+
+    editingIndex = null;
+    editInputValue = "";
+    editNoteValue = "";
+    renderTasks();
 }
 
 function renderTasks() {
@@ -10,6 +43,75 @@ function renderTasks() {
 
     tasks.forEach((task, index) => {
         const li = document.createElement("li");
+
+        if (editingIndex === index) {
+            const editFields = document.createElement("div");
+            editFields.className = "edit-fields";
+
+            const editInput = document.createElement("input");
+            editInput.type = "text";
+            editInput.value = editInputValue;
+            editInput.className = "edit-input";
+            editInput.placeholder = "Edit task title...";
+
+            editInput.addEventListener("input", function (e) {
+                editInputValue = e.target.value;
+            });
+
+            editInput.addEventListener("keypress", function (e) {
+                if (e.key === "Enter") {
+                    saveEdit(index);
+                }
+            });
+
+            const editNote = document.createElement("textarea");
+            editNote.value = editNoteValue;
+            editNote.className = "edit-note-input";
+            editNote.placeholder = "Add a note (optional)...";
+
+            editNote.addEventListener("input", function (e) {
+                editNoteValue = e.target.value;
+            });
+
+            editFields.appendChild(editInput);
+            editFields.appendChild(editNote);
+
+            const buttonGroup = document.createElement("div");
+            buttonGroup.className = "task-buttons";
+
+            const saveBtn = document.createElement("button");
+            saveBtn.textContent = "💾";
+            saveBtn.className = "save-btn";
+            saveBtn.title = "Save";
+            saveBtn.addEventListener("click", function () {
+                saveEdit(index);
+            });
+
+            const cancelBtn = document.createElement("button");
+            cancelBtn.textContent = "✖";
+            cancelBtn.className = "cancel-btn";
+            cancelBtn.title = "Cancel";
+            cancelBtn.addEventListener("click", function () {
+                cancelEditing();
+            });
+
+            buttonGroup.appendChild(saveBtn);
+            buttonGroup.appendChild(cancelBtn);
+
+            li.appendChild(editFields);
+            li.appendChild(buttonGroup);
+            list.appendChild(li);
+
+            setTimeout(() => {
+                editInput.focus();
+                editInput.setSelectionRange(editInput.value.length, editInput.value.length);
+            }, 0);
+
+            return;
+        }
+
+        const taskContent = document.createElement("div");
+        taskContent.className = "task-content";
 
         const taskText = document.createElement("span");
         taskText.textContent = task.text;
@@ -25,18 +127,55 @@ function renderTasks() {
             renderTasks();
         });
 
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "X";
-        deleteBtn.className = "delete-btn";
+        taskContent.appendChild(taskText);
 
+        if (task.note && task.note.trim() !== "") {
+            const taskNote = document.createElement("p");
+            taskNote.textContent = task.note;
+            taskNote.className = "task-note";
+
+            if (task.completed) {
+                taskNote.classList.add("completed-note");
+            }
+
+            taskContent.appendChild(taskNote);
+        }
+
+        const buttonGroup = document.createElement("div");
+        buttonGroup.className = "task-buttons";
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "✏️";
+        editBtn.className = "edit-btn";
+        editBtn.title = "Edit";
+        editBtn.addEventListener("click", function () {
+            startEditing(index);
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "🗑️";
+        deleteBtn.className = "delete-btn";
+        deleteBtn.title = "Delete";
         deleteBtn.addEventListener("click", function () {
             tasks.splice(index, 1);
+
+            if (editingIndex === index) {
+                editingIndex = null;
+                editInputValue = "";
+                editNoteValue = "";
+            } else if (editingIndex > index) {
+                editingIndex--;
+            }
+
             saveTasks();
             renderTasks();
         });
 
-        li.appendChild(taskText);
-        li.appendChild(deleteBtn);
+        buttonGroup.appendChild(editBtn);
+        buttonGroup.appendChild(deleteBtn);
+
+        li.appendChild(taskContent);
+        li.appendChild(buttonGroup);
         list.appendChild(li);
     });
 }
@@ -49,6 +188,7 @@ function addTask() {
 
     tasks.push({
         text: taskText,
+        note: "",
         completed: false
     });
 
