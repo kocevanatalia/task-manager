@@ -44,9 +44,9 @@ A pastel-themed task manager web app built with HTML, CSS, and JavaScript.
 
 ## 📸 Preview
 
+![getsitecontrol__convert-video-to-gif__free](https://github.com/user-attachments/assets/3434f8bc-7b54-4961-88e6-f560c5f32bd5)
 
 
-https://github.com/user-attachments/assets/b3d289cb-b46a-41be-a9c0-5c339cc2dd0e
 
 
 
