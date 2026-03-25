@@ -13,6 +13,7 @@ function renderTasks() {
 
         const taskText = document.createElement("span");
         taskText.textContent = task.text;
+        taskText.className = "task-text";
 
         if (task.completed) {
             taskText.classList.add("completed");
@@ -26,6 +27,7 @@ function renderTasks() {
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "X";
+        deleteBtn.className = "delete-btn";
 
         deleteBtn.addEventListener("click", function () {
             tasks.splice(index, 1);
