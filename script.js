@@ -2,6 +2,25 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let editingIndex = null;
 let editInputValue = "";
 let editNoteValue = "";
+let darkMode = JSON.parse(localStorage.getItem("darkMode")) || false;
+let draggedIndex = null;
+
+function applyTheme(){
+    if (darkMode) {
+        document.body.classList.add("dark-mode");
+        document.getElementById("themeToggle").textContent = "☀️";
+    } else {
+        document.body.classList.remove("dark-mode");
+        document.getElementById("themeToggle").textContent = "🌙";
+    }
+}
+
+
+function toggleTheme(){
+    darkMode = !darkMode;
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+    applyTheme();
+}
 
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -43,6 +62,38 @@ function renderTasks() {
 
     tasks.forEach((task, index) => {
         const li = document.createElement("li");
+        li.setAttribute("draggable", true);
+
+        if (editingIndex !== index) {
+            li.setAttribute("draggable", true);
+        }
+
+        li.addEventListener("dragstart", function() {
+            draggedIndex = index;
+            li.classList.add("dragging");
+        });
+
+        li.addEventListener("dragend", function () {
+            draggedIndex = null;
+            li.classList.remove("dragging");
+        })
+
+        li.addEventListener("dragover", function (e) {
+            e.preventDefault();
+        });
+
+        li.addEventListener("drop", function (e) {
+            e.preventDefault();
+
+            if (draggedIndex === null || draggedIndex === index) return;
+            
+            const draggedTask = tasks[draggedIndex];
+            tasks.splice(draggedIndex, 1);
+            tasks.splice(index, 0, draggedTask);
+
+            saveTasks();
+            renderTasks();
+        });
 
         if (editingIndex === index) {
             const editFields = document.createElement("div");
@@ -62,6 +113,7 @@ function renderTasks() {
                 if (e.key === "Enter") {
                     saveEdit(index);
                 }
+            
             });
 
             const editNote = document.createElement("textarea");
@@ -202,5 +254,8 @@ document.getElementById("taskInput").addEventListener("keypress", function (e) {
         addTask();
     }
 });
+
+document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+applyTheme();
 
 renderTasks();

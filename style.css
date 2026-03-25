@@ -96,6 +96,80 @@ li:hover {
     transform: translateY(-1px);
 }
 
+li.dragging {
+    opacity: 0.5;
+    transform: scale(0.98);
+}
+
+li {
+    cursor: grab;
+}
+
+li:active {
+    cursor: grabbing;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom:12px;
+}
+
+.theme-toggle {
+    background: #d6c6f0;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.theme-toggle:hover {
+    background: #b9a0df;
+}
+
+/* DARK MODE*/
+body.dark-mode {
+    background: rgba(38, 38, 50, 0.92);
+    color: #f3eaf2;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode input,
+body.dark-mode .edit-input,
+body.dark-mode .edit-note-input {
+    background: #2f2f3d;
+    color: #f3eaf2;
+    border: 2px solid #5c5166;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode .edit-note-input::placeholder {
+    color: #b9aebd;
+}
+
+body.dark-mode li {
+    background: #312b3a;
+    border: 2px dashed #8e6f8f;
+}
+
+body.dark-mode li:hover {
+    background: #3a3145;
+}
+
+body.dark-mode .task-text {
+    color: #f3eaf2;
+}
+
+body.dark-mode .task-text.completed {
+    color: #b89fb0;
+}
+
+body.dark-mode .completed-note {
+    color: #a793a3;
+}
+
 .task-buttons {
     display: flex;
     gap: 6px;
