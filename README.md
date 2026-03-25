@@ -11,6 +11,8 @@ A pastel-themed task manager web app built with HTML, CSS, and JavaScript.
 - Save tasks using localStorage (data persists after refresh)
 - Keyboard support (press Enter to add or edit tasks)
 - Aesthetic pastel UI design with emoji-based controls
+- Dark Mode Version
+- Drag & Drop task reordering
 
 ## 🛠️ Technologies Used
 - HTML
@@ -38,8 +40,6 @@ A pastel-themed task manager web app built with HTML, CSS, and JavaScript.
 ## 🚀 Future Improvements
 - Filter tasks (All / Completed / Active)
 - Clear completed tasks
-- Dark mode version
-- Drag & drop task reordering
 - Due dates / deadlines
 
 ## 📸 Preview
