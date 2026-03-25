@@ -43,6 +43,7 @@ A pastel-themed task manager web app built with HTML, CSS, and JavaScript.
 - Due dates / deadlines
 
 ## 📸 Preview
-<img width="1119" height="892" alt="Screenshot 2026-03-25 at 15 06 28" src="https://github.com/user-attachments/assets/2492cc47-0de1-4640-bb9f-ee119d6e28ef" />
+<img width="1002" height="688" alt="Screenshot 2026-03-25 at 15 09 17" src="https://github.com/user-attachments/assets/13a46636-1bf7-4ed0-91e3-f8a1db8c3300" />
+
 
 
