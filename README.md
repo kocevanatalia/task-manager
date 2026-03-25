@@ -14,6 +14,9 @@ A pastel-themed task manager web app built with HTML, CSS, and JavaScript.
 - Dark Mode Version
 - Drag & Drop task reordering
 
+## 🔗 Live Demo
+👉  https://kocevanatalia.github.io/task-manager/
+
 ## 🛠️ Technologies Used
 - HTML
 - CSS
